@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using WingtipToys.Models;
+using System.Web.ModelBinding;
 
 namespace WingtipToys
 {
@@ -13,5 +15,23 @@ namespace WingtipToys
         {
 
         }
-    }
+
+       
+
+       public IQueryable<Product> GetProduct([QueryString("productID")] int? productID)
+            {
+                var _db = new WingtipToys.Models.ProductContext();
+                IQueryable<Product> query = _db.Products;
+                if (productID.HasValue && productID > 0)
+                {
+                    query = query.Where(p => p.ProductID == productID);
+                }
+                else
+                {
+                    query = null;
+                }
+
+                return query;
+            }
+        }
 }
