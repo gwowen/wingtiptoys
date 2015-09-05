@@ -50,7 +50,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>&npsb;</td>
+                                <td>&nbsp;</td>
                             </tr>
                         </table>
                         </p>
