@@ -17,10 +17,10 @@ namespace WingtipToys.Logic
         public void AddToCart(int id)
         {
             //retrieve the product from the database
-            ShoppingCartID = GetCartID();
+            ShoppingCartId = GetCartID();
 
             var cartItem = _db.ShoppingCartItems.SingleOrDefault(
-                c => c.CartId == ShoppingCartID && c.ProductId == id);
+                c => c.CartId == ShoppingCartId && c.ProductId == id);
 
             if(cartItem == null)
             {
@@ -29,7 +29,7 @@ namespace WingtipToys.Logic
                 {
                     ItemId = Guid.NewGuid().ToString(),
                     ProductId = id,
-                    CartId = ShoppingCartID,
+                    CartId = ShoppingCartId,
                     Product = _db.Products.SingleOrDefault(p => p.ProductID == id),
                     Quantity = 1,
                     DateCreated = DateTime.Now
