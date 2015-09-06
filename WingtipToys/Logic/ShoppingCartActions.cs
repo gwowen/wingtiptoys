@@ -17,7 +17,7 @@ namespace WingtipToys.Logic
         public void AddToCart(int id)
         {
             //retrieve the product from the database
-            ShoppingCartId = GetCartID();
+            ShoppingCartId = GetCartId();
 
             var cartItem = _db.ShoppingCartItems.SingleOrDefault(
                 c => c.CartId == ShoppingCartId && c.ProductId == id);
@@ -55,7 +55,7 @@ namespace WingtipToys.Logic
             }
         }
 
-        public string GetCartID()
+        public string GetCartId()
         {
             if(HttpContext.Current.Session[CartSessionKey] == null)
             {
@@ -76,9 +76,22 @@ namespace WingtipToys.Logic
 
         public List<CartItem> GetCartItems()
         {
-            ShoppingCartId = GetCartID();
+            ShoppingCartId = GetCartId();
 
             return _db.ShoppingCartItems.Where(c => c.CartId == ShoppingCartId).ToList();
+        }
+
+        public decimal GetTotal()
+        {
+            ShoppingCartId = GetCartId();
+            //multiply product price by quantity of that product
+            //to get the current price for each of those products in the cart
+            //sum all product price totals to get the cart total
+            decimal? total = decimal.Zero;
+            total = (decimal?)(from cartItems in _db.ShoppingCartItems
+                               where cartItems.CartId == ShoppingCartId
+                               select (int?)cartItems.Quantity * cartItems.Product.UnitPrice).Sum();
+            return total ?? decimal.Zero;
         }
     }
 }
